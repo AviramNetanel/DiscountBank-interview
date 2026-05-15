@@ -94,7 +94,7 @@ private struct DSButtonVisualStyle: ButtonStyle {
     switch style {
     case .secondary:
       RoundedRectangle(cornerRadius: DSRadius.sm)
-        .stroke(Color.dsBorderSubtle, lineWidth: 1)
+        .stroke(Color.dsAccent, lineWidth: 3)
     case .primary, .ghost:
       EmptyView()
     }
