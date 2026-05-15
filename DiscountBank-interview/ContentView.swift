@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
   @Environment(BankStore.self) private var bankStore
+  @State private var selectedTransaction: Transaction?
 
   var body: some View {
     ScrollView(.vertical) {
@@ -46,7 +47,7 @@ struct ContentView: View {
               trailingText: transaction.formattedAmount(),
               trailingForegroundColor: amountColor(for: transaction),
               showsDisclosure: true,
-              action: {}
+              action: { selectedTransaction = transaction }
             )
           }
         }
@@ -55,6 +56,12 @@ struct ContentView: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.dsBackgroundPrimary)
+    .sheet(item: $selectedTransaction) { transaction in
+      TransactionDetailView(
+        transaction: transaction,
+        accountName: bankStore.accountName(for: transaction)
+      )
+    }
   }
 
   private var recentActivityHeader: some View {

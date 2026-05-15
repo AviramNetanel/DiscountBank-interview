@@ -10,6 +10,8 @@ struct Transaction: Identifiable, Hashable, Sendable {
   let accountId: UUID
   var title: String
   var category: String
+  var sender: String
+  var receiver: String
   var amount: Decimal
   var date: Date
   var systemImage: String
@@ -20,6 +22,14 @@ struct Transaction: Identifiable, Hashable, Sendable {
   func subtitle(accountName: String, locale: Locale = .current) -> String {
     let dateText = Transaction.dateFormatter(locale: locale).string(from: date)
     return "\(dateText) · \(accountName)"
+  }
+
+  func formattedDetailDate(locale: Locale = .current) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = locale
+    formatter.dateStyle = .long
+    formatter.timeStyle = .short
+    return formatter.string(from: date)
   }
 
   func formattedAmount(currencyCode: String = "ILS", locale: Locale = .current) -> String {

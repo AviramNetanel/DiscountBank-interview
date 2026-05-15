@@ -7,7 +7,7 @@ import Foundation
 
 /// Static sample data for demos and previews.
 enum MockBankRepository {
-  static let sampleUser = BankUser(firstName: "Aviram")
+  static let sampleUser = BankUser(firstName: "Aviram", lastName: "Netanel")
 
   private enum SampleID {
     static let checkingAccount = UUID(uuidString: "A1000001-0000-4000-8000-000000000001")!
@@ -47,8 +47,12 @@ enum MockBankRepository {
   ]
 
   static var sampleTransactions: [Transaction] {
-    let checkingId = SampleID.checkingAccount
-    let savingsId = SampleID.savingsAccount
+    let checking = sampleAccounts[0]
+    let savings = sampleAccounts[1]
+    let checkingId = checking.id
+    let savingsId = savings.id
+    let userName = sampleUser.fullName
+
     let calendar = Calendar.current
     let now = Date()
 
@@ -62,12 +66,13 @@ enum MockBankRepository {
     }
 
     return [
-      // Within ~1 month
       Transaction(
         id: SampleID.coffee,
         accountId: checkingId,
         title: "Coffee Shop",
         category: "Dining",
+        sender: userName,
+        receiver: "Cafe Aroma TLV",
         amount: -18.50,
         date: calendar.date(byAdding: .hour, value: -6, to: now)!,
         systemImage: "cup.and.saucer.fill"
@@ -77,6 +82,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Supermarket",
         category: "Groceries",
+        sender: userName,
+        receiver: "Shufersal",
         amount: -286.40,
         date: daysAgo(1),
         systemImage: "cart.fill"
@@ -86,6 +93,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Salary — Discount Ltd",
         category: "Income",
+        sender: "Discount Bank Ltd",
+        receiver: userName,
         amount: 14_200,
         date: daysAgo(2),
         systemImage: "arrow.down.circle.fill"
@@ -95,6 +104,8 @@ enum MockBankRepository {
         accountId: savingsId,
         title: "Monthly transfer in",
         category: "Transfer",
+        sender: userName,
+        receiver: userName,
         amount: 2_000,
         date: daysAgo(5),
         systemImage: "arrow.left.arrow.right.circle.fill"
@@ -104,6 +115,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Electric bill",
         category: "Utilities",
+        sender: userName,
+        receiver: "Israel Electric Corp",
         amount: -412.90,
         date: daysAgo(7),
         systemImage: "bolt.fill"
@@ -113,6 +126,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "ATM withdrawal",
         category: "Cash",
+        sender: userName,
+        receiver: userName,
         amount: -500,
         date: daysAgo(10),
         systemImage: "banknote.fill"
@@ -122,6 +137,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Gym membership",
         category: "Health",
+        sender: userName,
+        receiver: "Holmes Place",
         amount: -189,
         date: daysAgo(18),
         systemImage: "figure.run"
@@ -131,17 +148,19 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Restaurant",
         category: "Dining",
+        sender: userName,
+        receiver: "Mashya",
         amount: -245.80,
         date: daysAgo(25),
         systemImage: "fork.knife"
       ),
-
-      // ~2–3 months
       Transaction(
         id: SampleID.bonus,
         accountId: checkingId,
         title: "Performance bonus",
         category: "Income",
+        sender: "Discount Bank Ltd",
+        receiver: userName,
         amount: 3_500,
         date: monthsAgo(2, days: 4),
         systemImage: "star.circle.fill"
@@ -151,17 +170,19 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Car insurance",
         category: "Insurance",
+        sender: userName,
+        receiver: "Harel Insurance",
         amount: -1_240,
         date: monthsAgo(3, days: 2),
         systemImage: "car.fill"
       ),
-
-      // ~4–6 months
       Transaction(
         id: SampleID.savingsInterest,
         accountId: savingsId,
         title: "Interest payment",
         category: "Income",
+        sender: "Discount Bank Ltd",
+        receiver: userName,
         amount: 186.25,
         date: monthsAgo(5, days: 10),
         systemImage: "percent"
@@ -171,17 +192,19 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Mobile plan",
         category: "Utilities",
+        sender: userName,
+        receiver: "Partner",
         amount: -119.90,
         date: monthsAgo(6, days: 3),
         systemImage: "iphone"
       ),
-
-      // ~7–12 months
       Transaction(
         id: SampleID.rent,
         accountId: checkingId,
         title: "Rent payment",
         category: "Housing",
+        sender: userName,
+        receiver: "Landlord — Cohen",
         amount: -4_800,
         date: monthsAgo(9, days: 1),
         systemImage: "house.fill"
@@ -191,17 +214,19 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Tax refund",
         category: "Income",
+        sender: "Israel Tax Authority",
+        receiver: userName,
         amount: 2_150,
         date: monthsAgo(11, days: 15),
         systemImage: "doc.text.fill"
       ),
-
-      // Older than 1 year (visible only on Max)
       Transaction(
         id: SampleID.holidayGift,
         accountId: savingsId,
         title: "Holiday gift",
         category: "Transfer",
+        sender: "Family — Netanel",
+        receiver: userName,
         amount: 500,
         date: monthsAgo(14, days: 6),
         systemImage: "gift.fill"
@@ -211,6 +236,8 @@ enum MockBankRepository {
         accountId: checkingId,
         title: "Legacy transfer",
         category: "Transfer",
+        sender: userName,
+        receiver: "External account •••• 9912",
         amount: -750,
         date: monthsAgo(18, days: 20),
         systemImage: "clock.arrow.circlepath"
