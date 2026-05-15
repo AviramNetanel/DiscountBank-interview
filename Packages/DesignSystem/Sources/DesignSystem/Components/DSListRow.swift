@@ -10,6 +10,7 @@ public struct DSListRow: View {
   var subtitle: String?
   var systemImage: String?
   var trailingText: String?
+  var trailingForegroundColor: Color?
   var showsDisclosure: Bool
   var action: (() -> Void)?
 
@@ -18,6 +19,7 @@ public struct DSListRow: View {
     subtitle: String? = nil,
     systemImage: String? = nil,
     trailingText: String? = nil,
+    trailingForegroundColor: Color? = nil,
     showsDisclosure: Bool = false,
     action: (() -> Void)? = nil
   ) {
@@ -25,6 +27,7 @@ public struct DSListRow: View {
     self.subtitle = subtitle
     self.systemImage = systemImage
     self.trailingText = trailingText
+    self.trailingForegroundColor = trailingForegroundColor
     self.showsDisclosure = showsDisclosure
     self.action = action
   }
@@ -73,7 +76,7 @@ public struct DSListRow: View {
       if let trailingText, !trailingText.isEmpty {
         Text(trailingText)
           .font(DSTypography.bodyMedium)
-          .foregroundStyle(Color.dsTextPrimary)
+          .foregroundStyle(trailingForegroundColor ?? Color.dsTextPrimary)
           .multilineTextAlignment(.trailing)
       }
 
@@ -108,6 +111,7 @@ private struct DSListRowPreview: View {
           subtitle: "Yesterday · Checking",
           systemImage: "cup.and.saucer.fill",
           trailingText: "-₪ 18.50",
+          trailingForegroundColor: .dsAmountDebit,
           showsDisclosure: true,
           action: {}
         )
@@ -118,6 +122,7 @@ private struct DSListRowPreview: View {
           subtitle: "3 May · Savings",
           systemImage: "arrow.down.circle.fill",
           trailingText: "+₪ 12,000",
+          trailingForegroundColor: .dsSuccess,
           showsDisclosure: false
         )
       }

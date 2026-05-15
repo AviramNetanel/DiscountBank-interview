@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct DiscountBank_interviewApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  @State private var bankStore = BankStore()
+
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environment(bankStore)
     }
+  }
 }
