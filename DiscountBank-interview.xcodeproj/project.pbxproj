@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E4B208822FB4B1EA00C2EB76 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = E4B208812FB4B1EA00C2EB76 /* DesignSystem */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscountBank-interview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4B208822FB4B1EA00C2EB76 /* DesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "DiscountBank-interview";
 			packageProductDependencies = (
+				E4B208812FB4B1EA00C2EB76 /* DesignSystem */,
 			);
 			productName = "DiscountBank-interview";
 			productReference = E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = E4B208682FB4B1EA00C2EB76;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E4B208802FB4B1EA00C2EB76 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E4B208722FB4B1EA00C2EB76 /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E4B208802FB4B1EA00C2EB76 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/DesignSystem;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E4B208812FB4B1EA00C2EB76 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E4B208802FB4B1EA00C2EB76 /* XCLocalSwiftPackageReference "Packages/DesignSystem" */;
+			productName = DesignSystem;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E4B208692FB4B1EA00C2EB76 /* Project object */;
 }
