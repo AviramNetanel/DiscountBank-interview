@@ -9,7 +9,7 @@ struct Transaction: Identifiable, Hashable, Sendable {
   let id: UUID
   let accountId: UUID
   var title: String
-  var category: String
+  var category: TransactionCategory
   var sender: String
   var receiver: String
   var amount: Decimal

@@ -15,6 +15,7 @@ final class BankStore {
   var selectedAccountId: UUID?
   var activityPeriodFilter: TransactionPeriodFilter = .oneMonth
 
+  //MARK: -
   init(
     user: BankUser = MockBankRepository.sampleUser,
     accounts: [Account] = MockBankRepository.sampleAccounts,
@@ -28,7 +29,8 @@ final class BankStore {
     self.selectedAccountId = selectedAccountId
     self.activityPeriodFilter = activityPeriodFilter
   }
-
+  
+  //MARK: - Computed properties
   var selectedAccount: Account? {
     guard let selectedAccountId else { return nil }
     return account(id: selectedAccountId)
@@ -37,11 +39,7 @@ final class BankStore {
   var selectedAccountLabel: String {
     selectedAccount?.name ?? "All accounts"
   }
-
-  func selectAccount(_ account: Account?) {
-    selectedAccountId = account?.id
-  }
-
+  
   var totalBalance: Decimal {
     accounts.reduce(0) { $0 + $1.balance }
   }
@@ -52,6 +50,11 @@ final class BankStore {
 
   var balanceCardTitle: String {
     selectedAccount == nil ? "Total balance" : "Balance"
+  }
+
+  //MARK: -
+  func selectAccount(_ account: Account?) {
+    selectedAccountId = account?.id
   }
 
   func account(id: UUID) -> Account? {
@@ -69,13 +72,14 @@ final class BankStore {
     return Array(sorted.prefix(limit))
   }
 
-  func transactions(forAccountId accountId: UUID) -> [Transaction] {
-    transactions
-      .filter { $0.accountId == accountId }
-      .sorted { $0.date > $1.date }
-  }
-
   func accountName(for transaction: Transaction) -> String {
     account(id: transaction.accountId)?.name ?? "Account"
+  }
+
+  func updateTransaction(_ transaction: Transaction) {
+    guard let index = transactions.firstIndex(where: { $0.id == transaction.id }) else {
+      return
+    }
+    transactions[index] = transaction
   }
 }

@@ -15,19 +15,27 @@ struct ContentView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack(alignment: .leading, spacing: DSSpacing.lg) {
-        headerRow
-
+        HStack{
+          headerRow
+          Spacer()
+          Image("discountBankLogo")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 100)
+        }
         DSCard {
           VStack(alignment: .leading, spacing: DSSpacing.sm) {
-            Text(bankStore.balanceCardTitle)
-              .font(DSTypography.captionMedium)
-              .foregroundStyle(Color.dsTextSecondary)
-            DSAmountText(value: bankStore.displayedBalance, coloring: .monochrome, prominent: true)
-            if let account = bankStore.selectedAccount {
-              Text(account.displayTitle)
-                .font(DSTypography.caption)
+            HStack(alignment: .firstTextBaseline, spacing: DSSpacing.sm) {
+              
+              Text(bankStore.balanceCardTitle)
+                .font(DSTypography.captionMedium)
                 .foregroundStyle(Color.dsTextSecondary)
+              
+              Spacer()
+              
+              accountMenu
             }
+            DSAmountText(value: bankStore.displayedBalance, coloring: .monochrome, prominent: true)
           }
         }
 
@@ -104,17 +112,10 @@ struct ContentView: View {
   }
 
   private var headerRow: some View {
-    HStack(alignment: .center, spacing: DSSpacing.md) {
-      Text(bankStore.user.greeting)
-        .font(DSTypography.largeTitle)
-        .foregroundStyle(Color.dsTextPrimary)
-        .lineLimit(1)
-        .minimumScaleFactor(0.8)
-
-      Spacer(minLength: DSSpacing.sm)
-
-      accountMenu
-    }
+    Text(bankStore.user.greeting)
+      .font(DSTypography.largeTitle)
+      .foregroundStyle(Color.dsTextPrimary)
+      .frame(maxWidth: .infinity, alignment: .leading)
   }
 
   private var accountMenu: some View {
@@ -143,21 +144,13 @@ struct ContentView: View {
     } label: {
       HStack(spacing: DSSpacing.xs) {
         Text(bankStore.selectedAccountLabel)
-          .font(DSTypography.bodyMedium)
+          .font(DSTypography.captionMedium)
           .foregroundStyle(Color.dsAccent)
           .lineLimit(1)
         Image(systemName: "chevron.down")
-          .font(DSTypography.captionMedium)
+          .font(DSTypography.caption)
           .foregroundStyle(Color.dsAccent)
       }
-      .padding(.horizontal, DSSpacing.md)
-      .padding(.vertical, DSSpacing.sm)
-      .background(Color.dsBackgroundElevated)
-      .clipShape(RoundedRectangle(cornerRadius: DSRadius.sm))
-      .overlay(
-        RoundedRectangle(cornerRadius: DSRadius.sm)
-          .stroke(Color.dsBorderSubtle, lineWidth: 1)
-      )
     }
     .accessibilityLabel("Selected account: \(bankStore.selectedAccountLabel)")
   }
