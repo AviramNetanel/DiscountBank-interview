@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E40248AE2FB9336200398A96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E40248AD2FB9336100398A96 /* README.md */; };
 		E4B208822FB4B1EA00C2EB76 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = E4B208812FB4B1EA00C2EB76 /* DesignSystem */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +22,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E40248AD2FB9336100398A96 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscountBank-interview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B208902FB4B1EA00C2EB76 /* DiscountBank-interviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DiscountBank-interviewTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -60,6 +62,7 @@
 		E4B208682FB4B1EA00C2EB76 = {
 			isa = PBXGroup;
 			children = (
+				E40248AD2FB9336100398A96 /* README.md */,
 				E4B208732FB4B1EA00C2EB76 /* DiscountBank-interview */,
 				E4B208912FB4B1EA00C2EB76 /* DiscountBank-interviewTests */,
 				E4B208722FB4B1EA00C2EB76 /* Products */,
@@ -171,6 +174,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E40248AE2FB9336200398A96 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
