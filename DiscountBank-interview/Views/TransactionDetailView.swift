@@ -25,7 +25,7 @@ struct TransactionDetailView: View {
 
           DSCard {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
-              if !isEditing {
+              if isEditing {
                 editableField(label: "Sender", text: $draft.sender)
                 Divider().overlay(Color.dsBorderSubtle)
                 editableField(label: "Receiver", text: $draft.receiver)
