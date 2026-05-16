@@ -10,11 +10,18 @@ import SwiftUI
 @main
 struct DiscountBank_interviewApp: App {
   @State private var bankStore = BankStore()
+  @State private var isLoggedIn = false
 
   var body: some Scene {
     WindowGroup {
-      ContentView()
-        .environment(bankStore)
+      Group {
+        if isLoggedIn {
+          ContentView()
+        } else {
+          LoginView(isLoggedIn: $isLoggedIn)
+        }
+      }
+      .environment(bankStore)
     }
   }
 }
