@@ -74,7 +74,7 @@ struct TransactionDetailView: View {
               beginEditing()
             }
           } label: {
-            Image(systemName: isEditing ? "checkmark.circle" : "pencil")
+            Image(systemName: isEditing ? "checkmark" : "pencil")
               .font(.title3)
               .foregroundStyle(Color.dsAccent)
           }
@@ -106,8 +106,9 @@ struct TransactionDetailView: View {
       )
 
       if isEditing {
-        TextField("Title", text: $draft.title)
+        editableField(label: nil, text: $draft.title)
           .font(DSTypography.headline)
+          .bold()
           .foregroundStyle(Color.dsTextPrimary)
       } else {
         Text(displayTransaction.title)
@@ -208,12 +209,14 @@ struct TransactionDetailView: View {
     }
   }
 
-  private func editableField(label: String, text: Binding<String>) -> some View {
+  private func editableField(label: String?, text: Binding<String>) -> some View {
     VStack(alignment: .leading, spacing: DSSpacing.xs) {
-      Text(label.uppercased())
-        .font(DSTypography.captionMedium)
-        .foregroundStyle(Color.dsTextSecondary)
-      TextField(label, text: text)
+      if let label = label{
+        Text(label.uppercased())
+          .font(DSTypography.captionMedium)
+          .foregroundStyle(Color.dsTextSecondary)
+      }
+      TextField(label ?? "", text: text)
         .font(DSTypography.body)
         .foregroundStyle(Color.dsTextPrimary)
         .padding(DSSpacing.sm)

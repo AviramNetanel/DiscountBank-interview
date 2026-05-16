@@ -5,14 +5,16 @@
 
 import DesignSystem
 import SwiftUI
+internal import Combine
 
 struct LoginView: View {
   @Binding var isLoggedIn: Bool
   @State private var username: String = ""
   @State private var password: String = ""
   @State private var isDemoOn : Bool = true
+  @State private var showsForgotPasswordAlert = false
   @FocusState private var focusedField: Field?
-
+  @StateObject private var keyboard = KeyboardObserver()
   
   private enum Field {
     case username
@@ -93,21 +95,27 @@ struct LoginView: View {
           }
           .accessibilityHint("Opens your accounts.")
           
-          DSButton(title: "Forgot Password?",
-                   style: .ghost,
-                   action: {
-
+          DSButton(title: "Forgot Password?", style: .ghost) {
+            focusedField = nil
+            showsForgotPasswordAlert = true
           }
-          )
         }
 
         Spacer(minLength: DSSpacing.xxxl)
       }
       .padding(DSSpacing.lg)
     }
+
+    .scrollDisabled(true)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .offset(y: keyboard.keyboardHeight > 0 ? -150 : 0)
+    .animation(.easeInOut(duration: 0.25), value: keyboard.keyboardHeight)
     .background(Color.dsBackgroundPrimary)
-    .scrollDismissesKeyboard(.interactively)
+    .alert("Forgot Password?", isPresented: $showsForgotPasswordAlert) {
+      Button("OK", role: .cancel) {}
+    } message: {
+      Text("bummer...")
+    }
   }
 
   private var usernameTrimmed: String {
@@ -131,6 +139,38 @@ struct LoginView: View {
   }
 }
 
+//MARK: -
+final class KeyboardObserver: ObservableObject {
+    
+    @Published var keyboardHeight: CGFloat = 0
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        
+        let willShow = NotificationCenter.default.publisher(
+            for: UIResponder.keyboardWillShowNotification
+        )
+        .compactMap { notification -> CGFloat? in
+            guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+            else { return nil }
+            
+            return frame.height
+        }
+        
+        let willHide = NotificationCenter.default.publisher(
+            for: UIResponder.keyboardWillHideNotification
+        )
+        .map { _ in CGFloat(0) }
+        
+        Publishers.Merge(willShow, willHide)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] height in
+                self?.keyboardHeight = height
+            }
+            .store(in: &cancellables)
+    }
+}
 
 //MARK: -
 #Preview("Light") {

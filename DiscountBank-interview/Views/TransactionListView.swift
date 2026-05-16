@@ -68,14 +68,9 @@ struct TransactionListView: View {
         }
       }
     } label: {
-      HStack(spacing: DSSpacing.xs) {
-        Text(bankStore.activityPeriodFilter.menuLabel)
-          .font(DSTypography.captionMedium)
-          .foregroundStyle(Color.dsAccent)
-        Image(systemName: "chevron.down")
-          .font(DSTypography.caption)
-          .foregroundStyle(Color.dsAccent)
-      }
+      Image(systemName: "line.3.horizontal.decrease.circle")
+        .font(.title3)
+        .foregroundStyle(Color.dsAccent)
     }
     .accessibilityLabel("Activity period: \(bankStore.activityPeriodFilter.menuLabel)")
   }
