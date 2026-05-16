@@ -18,10 +18,13 @@ struct LoginView: View {
     case password
   }
 
-  init(isLoggedIn: Binding<Bool>) {
+  init(isLoggedIn: Binding<Bool>, bankStore: BankStore) {
     _isLoggedIn = isLoggedIn
     _viewModel = State(
-      initialValue: LoginViewModel(onSignIn: { isLoggedIn.wrappedValue = true })
+      initialValue: LoginViewModel(
+        bankStore: bankStore,
+        onSignIn: { isLoggedIn.wrappedValue = true }
+      )
     )
   }
 
@@ -164,11 +167,11 @@ final class KeyboardObserver: ObservableObject {
 // MARK: - Preview
 
 #Preview("Light") {
-  LoginView(isLoggedIn: .constant(false))
+  LoginView(isLoggedIn: .constant(false), bankStore: BankStore())
     .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-  LoginView(isLoggedIn: .constant(false))
+  LoginView(isLoggedIn: .constant(false), bankStore: BankStore())
     .preferredColorScheme(.dark)
 }

@@ -13,18 +13,24 @@ final class LoginViewModel {
   var isDemoOn = true
   var showsForgotPasswordAlert = false
 
+  private let bankStore: BankStore
   private let onSignIn: () -> Void
 
   var canSignIn: Bool {
-    !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && isDemoOn
+    !username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+    !password.isEmpty
   }
 
-  init(onSignIn: @escaping () -> Void) {
+  init(bankStore: BankStore, onSignIn: @escaping () -> Void) {
+    self.bankStore = bankStore
     self.onSignIn = onSignIn
   }
 
   func signIn() {
     guard canSignIn else { return }
+    if isDemoOn{
+      bankStore.loadDemoData(signInUsername: username)
+    }
     onSignIn()
   }
 

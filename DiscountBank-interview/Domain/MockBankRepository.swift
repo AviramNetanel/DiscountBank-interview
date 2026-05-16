@@ -96,7 +96,7 @@ enum MockBankRepository {
         sender: "Discount Bank Ltd",
         receiver: userName,
         amount: 14_200,
-        date: daysAgo(2),
+        date: daysAgo(3),
         systemImage: "arrow.down.circle.fill"
       ),
       Transaction(
@@ -107,7 +107,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: userName,
         amount: 2_000,
-        date: daysAgo(5),
+        date: daysAgo(35),
         systemImage: "arrow.left.arrow.right.circle.fill"
       ),
       Transaction(
@@ -118,7 +118,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: "Israel Electric Corp",
         amount: -412.90,
-        date: daysAgo(7),
+        date: daysAgo(37),
         systemImage: "bolt.fill"
       ),
       Transaction(
@@ -129,7 +129,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: userName,
         amount: -500,
-        date: daysAgo(10),
+        date: daysAgo(60),
         systemImage: "banknote.fill"
       ),
       Transaction(
@@ -140,7 +140,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: "Holmes Place",
         amount: -189,
-        date: daysAgo(18),
+        date: daysAgo(68),
         systemImage: "figure.run"
       ),
       Transaction(
@@ -151,7 +151,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: "Mashya",
         amount: -245.80,
-        date: daysAgo(25),
+        date: daysAgo(75),
         systemImage: "fork.knife"
       ),
       Transaction(
@@ -162,7 +162,7 @@ enum MockBankRepository {
         sender: "Discount Bank Ltd",
         receiver: userName,
         amount: 3_500,
-        date: monthsAgo(2, days: 4),
+        date: monthsAgo(2, days: 16),
         systemImage: "star.circle.fill"
       ),
       Transaction(
@@ -184,7 +184,7 @@ enum MockBankRepository {
         sender: "Discount Bank Ltd",
         receiver: userName,
         amount: 186.25,
-        date: monthsAgo(5, days: 10),
+        date: monthsAgo(6, days: 10),
         systemImage: "percent"
       ),
       Transaction(
@@ -195,7 +195,7 @@ enum MockBankRepository {
         sender: userName,
         receiver: "Partner",
         amount: -119.90,
-        date: monthsAgo(6, days: 3),
+        date: monthsAgo(6, days: 15),
         systemImage: "iphone"
       ),
       Transaction(
@@ -243,5 +243,25 @@ enum MockBankRepository {
         systemImage: "clock.arrow.circlepath"
       ),
     ]
+  }
+
+  struct DemoSession {
+    let user: BankUser
+    let accounts: [Account]
+    let transactions: [Transaction]
+  }
+
+  /// Builds demo bank data for a sign-in. Only used when demo mode is enabled.
+  static func makeDemoSession(signInUsername: String) -> DemoSession {
+    let trimmed = signInUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+    var user = sampleUser
+    if !trimmed.isEmpty {
+      user.firstName = trimmed
+    }
+    return DemoSession(
+      user: user,
+      accounts: sampleAccounts,
+      transactions: sampleTransactions
+    )
   }
 }

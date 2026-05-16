@@ -25,7 +25,7 @@ struct TransactionDetailView: View {
 
           DSCard {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
-              if isEditing {
+              if !isEditing {
                 editableField(label: "Sender", text: $draft.sender)
                 Divider().overlay(Color.dsBorderSubtle)
                 editableField(label: "Receiver", text: $draft.receiver)
@@ -109,7 +109,6 @@ struct TransactionDetailView: View {
         editableField(label: nil, text: $draft.title)
           .font(DSTypography.headline)
           .bold()
-          .foregroundStyle(Color.dsTextPrimary)
       } else {
         Text(displayTransaction.title)
           .font(DSTypography.headline)
@@ -219,8 +218,9 @@ struct TransactionDetailView: View {
       TextField(label ?? "", text: text)
         .font(DSTypography.body)
         .foregroundStyle(Color.dsTextPrimary)
-        .padding(DSSpacing.sm)
+        .padding(DSSpacing.md)
         .background(Color.dsBackgroundPrimary)
+        
         .clipShape(RoundedRectangle(cornerRadius: DSRadius.sm))
         .overlay(
           RoundedRectangle(cornerRadius: DSRadius.sm)
@@ -289,10 +289,20 @@ private struct TransactionDraft {
   }
 }
 
-#Preview {
+#Preview("Light") {
   TransactionDetailView(
     transaction: MockBankRepository.sampleTransactions[0],
     accountName: "234 4521"
   )
-  .environment(BankStore())
+  .environment(BankStore.preview)
+  .preferredColorScheme(.light)
+}
+
+#Preview("Dark") {
+  TransactionDetailView(
+    transaction: MockBankRepository.sampleTransactions[0],
+    accountName: "234 4521"
+  )
+  .environment(BankStore.preview)
+  .preferredColorScheme(.dark)
 }

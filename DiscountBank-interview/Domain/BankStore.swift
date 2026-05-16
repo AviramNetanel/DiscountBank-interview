@@ -17,9 +17,9 @@ final class BankStore {
 
   //MARK: -
   init(
-    user: BankUser = MockBankRepository.sampleUser,
-    accounts: [Account] = MockBankRepository.sampleAccounts,
-    transactions: [Transaction] = MockBankRepository.sampleTransactions,
+    user: BankUser = BankUser(firstName: "", lastName: ""),
+    accounts: [Account] = [],
+    transactions: [Transaction] = [],
     selectedAccountId: UUID? = nil,
     activityPeriodFilter: TransactionPeriodFilter = .oneMonth
   ) {
@@ -81,5 +81,32 @@ final class BankStore {
       return
     }
     transactions[index] = transaction
+  }
+
+  /// Loads demo accounts and transactions from `MockBankRepository`.
+  func loadDemoData(signInUsername: String) {
+    let session = MockBankRepository.makeDemoSession(signInUsername: signInUsername)
+    user = session.user
+    accounts = session.accounts
+    transactions = session.transactions
+    selectedAccountId = nil
+    activityPeriodFilter = .oneMonth
+  }
+
+  func clearSession() {
+    user = BankUser(firstName: "", lastName: "")
+    accounts = []
+    transactions = []
+    selectedAccountId = nil
+    activityPeriodFilter = .oneMonth
+  }
+}
+
+extension BankStore {
+  /// Populated with mock data for SwiftUI previews.
+  static var preview: BankStore {
+    let store = BankStore()
+    store.loadDemoData(signInUsername: "Aviram")
+    return store
   }
 }

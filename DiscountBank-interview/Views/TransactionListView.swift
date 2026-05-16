@@ -84,7 +84,7 @@ struct TransactionListView: View {
 
 #Preview("Light") {
   TransactionListView()
-    .environment(BankStore())
+    .environment(BankStore.preview)
     .padding(DSSpacing.lg)
     .background(Color.dsBackgroundPrimary)
     .preferredColorScheme(.light)
@@ -92,7 +92,7 @@ struct TransactionListView: View {
 
 #Preview("Dark") {
   TransactionListView()
-    .environment(BankStore())
+    .environment(BankStore.preview)
     .padding(DSSpacing.lg)
     .background(Color.dsBackgroundPrimary)
     .preferredColorScheme(.dark)

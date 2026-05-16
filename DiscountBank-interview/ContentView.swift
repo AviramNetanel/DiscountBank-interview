@@ -95,12 +95,12 @@ struct ContentView: View {
 
 #Preview("Light") {
   ContentView()
-    .environment(BankStore())
+    .environment(BankStore.preview)
     .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
   ContentView()
-    .environment(BankStore())
+    .environment(BankStore.preview)
     .preferredColorScheme(.dark)
 }

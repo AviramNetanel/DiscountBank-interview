@@ -18,7 +18,7 @@ struct DiscountBank_interviewApp: App {
         if isLoggedIn {
           ContentView()
         } else {
-          LoginView(isLoggedIn: $isLoggedIn)
+          LoginView(isLoggedIn: $isLoggedIn, bankStore: bankStore)
         }
       }
       .environment(bankStore)
