@@ -5,8 +5,10 @@
 
 import Foundation
 
-/// Static sample data for demos and previews.
-enum MockBankRepository {
+/// In-memory demo data for interviews and SwiftUI previews.
+struct MockBankRepository: BankRepository {
+  static let shared = MockBankRepository()
+
   static let sampleUser = BankUser(firstName: "Aviram", lastName: "Netanel")
 
   private enum SampleID {
@@ -245,23 +247,21 @@ enum MockBankRepository {
     ]
   }
 
-  struct DemoSession {
-    let user: BankUser
-    let accounts: [Account]
-    let transactions: [Transaction]
-  }
-
-  /// Builds demo bank data for a sign-in. Only used when demo mode is enabled.
-  static func makeDemoSession(signInUsername: String) -> DemoSession {
+  func fetchDemoSession(signInUsername: String) -> BankSession {
     let trimmed = signInUsername.trimmingCharacters(in: .whitespacesAndNewlines)
-    var user = sampleUser
+    var user = Self.sampleUser
     if !trimmed.isEmpty {
       user.firstName = trimmed
     }
-    return DemoSession(
+    return BankSession(
       user: user,
-      accounts: sampleAccounts,
-      transactions: sampleTransactions
+      accounts: Self.sampleAccounts,
+      transactions: Self.sampleTransactions
     )
+  }
+
+  /// Convenience for tests and callers that used the previous static API.
+  static func makeDemoSession(signInUsername: String) -> BankSession {
+    shared.fetchDemoSession(signInUsername: signInUsername)
   }
 }

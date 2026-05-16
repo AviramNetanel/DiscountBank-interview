@@ -36,7 +36,8 @@ struct TransactionListView: View {
     .sheet(item: $selectedTransaction) { transaction in
       TransactionDetailView(
         transaction: transaction,
-        accountName: bankStore.accountName(for: transaction)
+        accountName: bankStore.accountName(for: transaction),
+        bankStore: bankStore
       )
     }
   }

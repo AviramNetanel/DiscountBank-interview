@@ -8,6 +8,7 @@ import Observation
 
 @Observable
 final class BankStore {
+  private let repository: any BankRepository
   private let persistence: TransactionPersistence?
 
   private(set) var user: BankUser
@@ -19,6 +20,7 @@ final class BankStore {
 
   //MARK: -
   init(
+    repository: any BankRepository = MockBankRepository.shared,
     persistence: TransactionPersistence? = nil,
     user: BankUser = BankUser(firstName: "", lastName: ""),
     accounts: [Account] = [],
@@ -26,6 +28,7 @@ final class BankStore {
     selectedAccountId: UUID? = nil,
     activityPeriodFilter: TransactionPeriodFilter = .oneMonth
   ) {
+    self.repository = repository
     self.persistence = persistence
     self.user = user
     self.accounts = accounts
@@ -88,9 +91,9 @@ final class BankStore {
     persistence?.saveOverride(for: transaction)
   }
 
-  /// Loads demo accounts and transactions from `MockBankRepository`.
+  /// Loads demo accounts and transactions via the configured `BankRepository`.
   func loadDemoData(signInUsername: String) {
-    let session = MockBankRepository.makeDemoSession(signInUsername: signInUsername)
+    let session = repository.fetchDemoSession(signInUsername: signInUsername)
     user = session.user
     accounts = session.accounts
     transactions = persistence?.applyOverrides(to: session.transactions) ?? session.transactions
