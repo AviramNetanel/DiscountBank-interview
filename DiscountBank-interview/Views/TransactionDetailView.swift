@@ -7,44 +7,73 @@ import DesignSystem
 import SwiftUI
 
 struct TransactionDetailView: View {
-  let transaction: Transaction
-  let accountName: String
-
-  @Environment(BankStore.self) private var bankStore
   @Environment(\.dismiss) private var dismiss
-
-  @State private var isEditing = false
+  @State private var viewModel: TransactionDetailViewModel
   @State private var selectedDetent: PresentationDetent = .medium
-  @State private var draft = TransactionDraft.empty
+
+  init(transaction: Transaction, accountName: String, bankStore: BankStore) {
+    _viewModel = State(
+      initialValue: TransactionDetailViewModel(
+        transaction: transaction,
+        accountName: accountName,
+        bankStore: bankStore
+      )
+    )
+  }
 
   var body: some View {
+    @Bindable var viewModel = viewModel
+
     NavigationStack {
       ScrollView(.vertical) {
         VStack(alignment: .leading, spacing: DSSpacing.lg) {
-          headerSection
+          VStack(alignment: .leading, spacing: DSSpacing.md) {
+            DSAmountText(
+              value: viewModel.displayTransaction.amount,
+              coloring: .signedSemantic,
+              prominent: true
+            )
+
+            if viewModel.isEditing {
+              editableField(label: nil, text: $viewModel.draft.title)
+                .font(DSTypography.headline)
+                .bold()
+            } else {
+              Text(viewModel.displayTransaction.title)
+                .font(DSTypography.headline)
+                .foregroundStyle(Color.dsTextPrimary)
+            }
+
+            if viewModel.isEditing {
+              categoryPickerRow
+            } else {
+              categoryDisplayRow
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
 
           DSCard {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
-              if isEditing {
-                editableField(label: "Sender", text: $draft.sender)
+              if viewModel.isEditing {
+                editableField(label: "Sender", text: $viewModel.draft.sender)
                 Divider().overlay(Color.dsBorderSubtle)
-                editableField(label: "Receiver", text: $draft.receiver)
+                editableField(label: "Receiver", text: $viewModel.draft.receiver)
                 Divider().overlay(Color.dsBorderSubtle)
-                editableDateField
+                datePickerField
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Account", value: accountName)
+                detailRow(label: "Account", value: viewModel.accountName)
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Transaction ID", value: transaction.id.uuidString)
+                detailRow(label: "Transaction ID", value: viewModel.transactionIDText)
               } else {
-                detailRow(label: "Sender", value: displayTransaction.sender)
+                detailRow(label: "Sender", value: viewModel.displayTransaction.sender)
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Receiver", value: displayTransaction.receiver)
+                detailRow(label: "Receiver", value: viewModel.displayTransaction.receiver)
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Date", value: displayTransaction.formattedDetailDate())
+                detailRow(label: "Date", value: viewModel.displayTransaction.formattedDetailDate())
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Account", value: accountName)
+                detailRow(label: "Account", value: viewModel.accountName)
                 Divider().overlay(Color.dsBorderSubtle)
-                detailRow(label: "Transaction ID", value: transaction.id.uuidString)
+                detailRow(label: "Transaction ID", value: viewModel.transactionIDText)
               }
             }
           }
@@ -68,86 +97,53 @@ struct TransactionDetailView: View {
 
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            if isEditing {
-              saveEdits()
-            } else {
-              beginEditing()
+            withAnimation {
+              let wasEditing = viewModel.isEditing
+              viewModel.toolbarPrimaryTapped()
+              if !wasEditing {
+                selectedDetent = .large
+              }
             }
           } label: {
-            Image(systemName: isEditing ? "checkmark" : "pencil")
+            Image(systemName: viewModel.isEditing ? "checkmark" : "pencil")
               .font(.title3)
               .foregroundStyle(Color.dsAccent)
           }
-          .accessibilityLabel(isEditing ? "Save changes" : "Edit transaction")
+          .accessibilityLabel(viewModel.isEditing ? "Save changes" : "Edit transaction")
         }
       }
     }
     .presentationDetents(
-      isEditing ? [.large] : [.medium, .large],
+      viewModel.isEditing ? [.large] : [.medium, .large],
       selection: $selectedDetent
     )
     .presentationDragIndicator(.visible)
   }
 
-  private var displayTransaction: Transaction {
-    bankStore.transactions.first { $0.id == transaction.id } ?? transaction
-  }
-
-  private var activeCategory: TransactionCategory {
-    isEditing ? draft.category : displayTransaction.category
-  }
-
-  private var headerSection: some View {
-    VStack(alignment: .leading, spacing: DSSpacing.md) {
-      DSAmountText(
-        value: displayTransaction.amount,
-        coloring: .signedSemantic,
-        prominent: true
-      )
-
-      if isEditing {
-        editableField(label: nil, text: $draft.title)
-          .font(DSTypography.headline)
-          .bold()
-      } else {
-        Text(displayTransaction.title)
-          .font(DSTypography.headline)
-          .foregroundStyle(Color.dsTextPrimary)
-      }
-
-      if isEditing {
-        categoryPickerRow
-      } else {
-        categoryDisplayRow
-      }
-    }
-    .frame(maxWidth: .infinity, alignment: .leading)
-  }
-
   private var categoryDisplayRow: some View {
     HStack(spacing: DSSpacing.sm) {
-      Image(systemName: displayTransaction.category.systemImage)
+      Image(systemName: viewModel.displayTransaction.category.systemImage)
         .font(DSTypography.bodyMedium)
         .foregroundStyle(Color.dsAccent)
         .frame(width: 28, height: 28)
         .background(Color.dsBackgroundElevated)
         .clipShape(RoundedRectangle(cornerRadius: DSRadius.sm))
 
-      Text(displayTransaction.category.title)
+      Text(viewModel.displayTransaction.category.title)
         .font(DSTypography.subheadline)
         .foregroundStyle(Color.dsTextSecondary)
     }
     .accessibilityElement(children: .combine)
-    .accessibilityLabel("Category: \(displayTransaction.category.title)")
+    .accessibilityLabel("Category: \(viewModel.displayTransaction.category.title)")
   }
 
   private var categoryPickerRow: some View {
     Menu {
       ForEach(TransactionCategory.allCases) { category in
         Button {
-          draft.category = category
+          viewModel.selectCategory(category)
         } label: {
-          if activeCategory == category {
+          if viewModel.activeCategory == category {
             Label(category.title, systemImage: category.systemImage)
           } else {
             Label {
@@ -160,14 +156,14 @@ struct TransactionDetailView: View {
       }
     } label: {
       HStack(spacing: DSSpacing.sm) {
-        Image(systemName: activeCategory.systemImage)
+        Image(systemName: viewModel.activeCategory.systemImage)
           .font(DSTypography.bodyMedium)
           .foregroundStyle(Color.dsAccent)
           .frame(width: 28, height: 28)
           .background(Color.dsBackgroundElevated)
           .clipShape(RoundedRectangle(cornerRadius: DSRadius.sm))
 
-        Text(activeCategory.title)
+        Text(viewModel.activeCategory.title)
           .font(DSTypography.subheadline)
           .foregroundStyle(Color.dsTextSecondary)
 
@@ -177,17 +173,17 @@ struct TransactionDetailView: View {
       }
     }
     .buttonStyle(.plain)
-    .accessibilityLabel("Category: \(activeCategory.title). Tap to change.")
+    .accessibilityLabel("Category: \(viewModel.activeCategory.title). Tap to change.")
   }
 
-  private var editableDateField: some View {
+  private var datePickerField: some View {
     VStack(alignment: .leading, spacing: DSSpacing.xs) {
       Text("DATE")
         .font(DSTypography.captionMedium)
         .foregroundStyle(Color.dsTextSecondary)
       DatePicker(
         "",
-        selection: $draft.date,
+        selection: $viewModel.draft.date,
         displayedComponents: [.date, .hourAndMinute]
       )
       .labelsHidden()
@@ -210,7 +206,7 @@ struct TransactionDetailView: View {
 
   private func editableField(label: String?, text: Binding<String>) -> some View {
     VStack(alignment: .leading, spacing: DSSpacing.xs) {
-      if let label = label{
+      if let label {
         Text(label.uppercased())
           .font(DSTypography.captionMedium)
           .foregroundStyle(Color.dsTextSecondary)
@@ -220,7 +216,6 @@ struct TransactionDetailView: View {
         .foregroundStyle(Color.dsTextPrimary)
         .padding(DSSpacing.md)
         .background(Color.dsBackgroundPrimary)
-        
         .clipShape(RoundedRectangle(cornerRadius: DSRadius.sm))
         .overlay(
           RoundedRectangle(cornerRadius: DSRadius.sm)
@@ -228,81 +223,22 @@ struct TransactionDetailView: View {
         )
     }
   }
-
-  private func beginEditing() {
-    draft = TransactionDraft(transaction: displayTransaction)
-    withAnimation {
-      isEditing = true
-      selectedDetent = .large
-    }
-  }
-
-  private func saveEdits() {
-    var updated = displayTransaction
-    updated.title = draft.title.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-    updated.category = draft.category
-    updated.sender = draft.sender.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-    updated.receiver = draft.receiver.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-    updated.date = draft.date
-
-    bankStore.updateTransaction(updated)
-
-    withAnimation {
-      isEditing = false
-    }
-  }
-}
-
-// MARK: - Edit draft
-
-private struct TransactionDraft {
-  var title: String
-  var category: TransactionCategory
-  var sender: String
-  var receiver: String
-  var date: Date
-
-  static let empty = TransactionDraft()
-
-  init(
-    title: String = "",
-    category: TransactionCategory = .dining,
-    sender: String = "",
-    receiver: String = "",
-    date: Date = .now
-  ) {
-    self.title = title
-    self.category = category
-    self.sender = sender
-    self.receiver = receiver
-    self.date = date
-  }
-
-  init(transaction: Transaction) {
-    self.init(
-      title: transaction.title,
-      category: transaction.category,
-      sender: transaction.sender,
-      receiver: transaction.receiver,
-      date: transaction.date
-    )
-  }
 }
 
 #Preview("Light") {
   TransactionDetailView(
     transaction: MockBankRepository.sampleTransactions[0],
-    accountName: "234 4521"
+    accountName: "234 4521",
+    bankStore: .preview
   )
-  .environment(BankStore.preview)
   .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
   TransactionDetailView(
     transaction: MockBankRepository.sampleTransactions[0],
-    accountName: "234 4521"
+    accountName: "234 4521",
+    bankStore: .preview
   )
-  .environment(BankStore.preview)
   .preferredColorScheme(.dark)
 }
