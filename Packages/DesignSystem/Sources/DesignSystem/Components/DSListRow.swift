@@ -52,7 +52,7 @@ public struct DSListRow: View {
       if let systemImage {
         Image(systemName: systemImage)
           .font(DSTypography.bodyMedium)
-          .foregroundStyle(Color.dsAccent)
+          .foregroundStyle(Color.dsTextPrimary)
           .frame(width: 28, height: 28)
           .accessibilityHidden(true)
       }
