@@ -8,6 +8,8 @@ import Observation
 
 @Observable
 final class BankStore {
+  private let persistence: TransactionPersistence?
+
   private(set) var user: BankUser
   private(set) var accounts: [Account]
   private(set) var transactions: [Transaction]
@@ -17,12 +19,14 @@ final class BankStore {
 
   //MARK: -
   init(
+    persistence: TransactionPersistence? = nil,
     user: BankUser = BankUser(firstName: "", lastName: ""),
     accounts: [Account] = [],
     transactions: [Transaction] = [],
     selectedAccountId: UUID? = nil,
     activityPeriodFilter: TransactionPeriodFilter = .oneMonth
   ) {
+    self.persistence = persistence
     self.user = user
     self.accounts = accounts
     self.transactions = transactions
@@ -81,6 +85,7 @@ final class BankStore {
       return
     }
     transactions[index] = transaction
+    persistence?.saveOverride(for: transaction)
   }
 
   /// Loads demo accounts and transactions from `MockBankRepository`.
@@ -88,11 +93,12 @@ final class BankStore {
     let session = MockBankRepository.makeDemoSession(signInUsername: signInUsername)
     user = session.user
     accounts = session.accounts
-    transactions = session.transactions
+    transactions = persistence?.applyOverrides(to: session.transactions) ?? session.transactions
     selectedAccountId = nil
     activityPeriodFilter = .oneMonth
   }
 
+  /// Clears in-memory session state. Local transaction overrides are kept on disk.
   func clearSession() {
     user = BankUser(firstName: "", lastName: "")
     accounts = []
