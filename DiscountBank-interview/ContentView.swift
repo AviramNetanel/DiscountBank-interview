@@ -12,37 +12,40 @@ struct ContentView: View {
   @Environment(BankStore.self) private var bankStore
 
   var body: some View {
-    ScrollView(.vertical) {
-      VStack(alignment: .leading, spacing: DSSpacing.lg) {
-        HStack {
-          headerRow
-          Spacer()
-          Image("discountBankLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100)
-        }
-
-        DSCard {
-          VStack(alignment: .leading, spacing: DSSpacing.sm) {
-            HStack(alignment: .firstTextBaseline, spacing: DSSpacing.sm) {
-              Text(bankStore.balanceCardTitle)
-                .font(DSTypography.captionMedium)
-                .foregroundStyle(Color.dsTextSecondary)
-
-              Spacer()
-
-              accountMenu
-            }
-            DSAmountText(value: bankStore.displayedBalance, coloring: .monochrome, prominent: true)
+    
+    VStack(alignment: .leading, spacing: DSSpacing.lg) {
+      HStack {
+        headerRow
+        Spacer()
+        Image("discountBankLogo")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 100)
+      }
+      .padding(.horizontal, DSSpacing.lg)
+      
+      DSCard {
+        VStack(alignment: .leading, spacing: DSSpacing.sm) {
+          HStack(alignment: .firstTextBaseline, spacing: DSSpacing.sm) {
+            Text(bankStore.balanceCardTitle)
+              .font(DSTypography.captionMedium)
+              .foregroundStyle(Color.dsTextSecondary)
+            
+            Spacer()
+            
+            accountMenu
           }
+          DSAmountText(value: bankStore.displayedBalance, coloring: .monochrome, prominent: true)
         }
-
+      }
+      
+      ScrollView(.vertical) {
         TransactionListView()
       }
       .padding(DSSpacing.lg)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    
     .background(Color.dsBackgroundPrimary)
   }
 
