@@ -16,14 +16,16 @@ enum DSFontRegistration {
     guard !didRegister else { return }
     didRegister = true
 
-    let extensions = ["ttf", "otf"]
-    for ext in extensions {
-      guard let urls = Bundle.module.urls(forResourcesWithExtension: ext, subdirectory: nil) else {
-        continue
-      }
-      for url in urls {
-        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-      }
+    // Only the variable font — static Regular/Bold .ttf files register the same
+    // PostScript names and trigger GSFont "already exists" console warnings.
+    guard
+      let url = Bundle.module.url(
+        forResource: "Roboto-VariableFont_wdth,wght",
+        withExtension: "ttf"
+      )
+    else {
+      return
     }
+    CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
   }
 }

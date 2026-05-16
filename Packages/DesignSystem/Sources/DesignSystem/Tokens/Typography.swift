@@ -2,7 +2,7 @@
 //  Typography.swift
 //  DesignSystem
 //
-//  Roboto from Resources/Fonts (Roboto-Regular, Roboto-Bold, Roboto variable).
+//  Roboto variable font from Resources/Fonts.
 //
 
 import SwiftUI
@@ -19,16 +19,10 @@ public enum DSTypography {
 
   private static func roboto(size: CGFloat, weight: Font.Weight) -> Font {
     DSFontRegistration.registerIfNeeded()
-
-    if weight == .regular {
-      return .custom(DSFontName.regular, size: size)
-    }
     return .custom(DSFontName.variable, size: size).weight(weight)
   }
 }
 
 private enum DSFontName {
-  static let regular = "Roboto-Regular"
-  /// Variable Roboto for medium, semibold, black, etc.
   static let variable = "Roboto"
 }
