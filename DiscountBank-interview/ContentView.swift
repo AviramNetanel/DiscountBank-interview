@@ -10,12 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
   @Environment(BankStore.self) private var bankStore
-  @State private var selectedTransaction: Transaction?
 
   var body: some View {
     ScrollView(.vertical) {
       VStack(alignment: .leading, spacing: DSSpacing.lg) {
-        HStack{
+        HStack {
           headerRow
           Spacer()
           Image("discountBankLogo")
@@ -23,92 +22,28 @@ struct ContentView: View {
             .scaledToFit()
             .frame(width: 100)
         }
+
         DSCard {
           VStack(alignment: .leading, spacing: DSSpacing.sm) {
             HStack(alignment: .firstTextBaseline, spacing: DSSpacing.sm) {
-              
               Text(bankStore.balanceCardTitle)
                 .font(DSTypography.captionMedium)
                 .foregroundStyle(Color.dsTextSecondary)
-              
+
               Spacer()
-              
+
               accountMenu
             }
             DSAmountText(value: bankStore.displayedBalance, coloring: .monochrome, prominent: true)
           }
         }
 
-        recentActivityHeader
-
-        if bankStore.recentTransactions().isEmpty {
-          Text("No transactions in this period.")
-            .font(DSTypography.body)
-            .foregroundStyle(Color.dsTextSecondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-          ForEach(bankStore.recentTransactions()) { transaction in
-            DSListRow(
-              title: transaction.title,
-              subtitle: transaction.subtitle(accountName: bankStore.accountName(for: transaction)),
-              systemImage: transaction.systemImage,
-              trailingText: transaction.formattedAmount(),
-              trailingForegroundColor: amountColor(for: transaction),
-              showsDisclosure: true,
-              action: { selectedTransaction = transaction }
-            )
-          }
-        }
+        TransactionListView()
       }
       .padding(DSSpacing.lg)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.dsBackgroundPrimary)
-    .sheet(item: $selectedTransaction) { transaction in
-      TransactionDetailView(
-        transaction: transaction,
-        accountName: bankStore.accountName(for: transaction)
-      )
-    }
-  }
-
-  private var recentActivityHeader: some View {
-    HStack(alignment: .firstTextBaseline, spacing: DSSpacing.md) {
-      Text("RECENT ACTIVITY")
-        .font(DSTypography.captionMedium)
-        .foregroundStyle(Color.dsTextSecondary)
-        .accessibilityAddTraits(.isHeader)
-
-      Spacer(minLength: DSSpacing.sm)
-
-      periodFilterMenu
-    }
-  }
-
-  private var periodFilterMenu: some View {
-    Menu {
-      ForEach(TransactionPeriodFilter.allCases) { period in
-        Button {
-          bankStore.activityPeriodFilter = period
-        } label: {
-          if bankStore.activityPeriodFilter == period {
-            Label(period.menuLabel, systemImage: "checkmark")
-          } else {
-            Text(period.menuLabel)
-          }
-        }
-      }
-    } label: {
-      HStack(spacing: DSSpacing.xs) {
-        Text(bankStore.activityPeriodFilter.menuLabel)
-          .font(DSTypography.captionMedium)
-          .foregroundStyle(Color.dsAccent)
-        Image(systemName: "chevron.down")
-          .font(DSTypography.caption)
-          .foregroundStyle(Color.dsAccent)
-      }
-    }
-    .accessibilityLabel("Activity period: \(bankStore.activityPeriodFilter.menuLabel)")
   }
 
   private var headerRow: some View {
@@ -153,12 +88,6 @@ struct ContentView: View {
       }
     }
     .accessibilityLabel("Selected account: \(bankStore.selectedAccountLabel)")
-  }
-
-  private func amountColor(for transaction: Transaction) -> Color {
-    if transaction.isCredit { return Color.dsSuccess }
-    if transaction.isDebit { return Color.dsAmountDebit }
-    return Color.dsTextPrimary
   }
 }
 
