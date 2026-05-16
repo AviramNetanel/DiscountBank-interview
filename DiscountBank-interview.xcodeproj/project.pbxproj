@@ -10,14 +10,30 @@
 		E4B208822FB4B1EA00C2EB76 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = E4B208812FB4B1EA00C2EB76 /* DesignSystem */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E4B208972FB4B1EA00C2EB76 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4B208692FB4B1EA00C2EB76 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4B208702FB4B1EA00C2EB76;
+			remoteInfo = "DiscountBank-interview";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscountBank-interview.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B208902FB4B1EA00C2EB76 /* DiscountBank-interviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DiscountBank-interviewTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E4B208732FB4B1EA00C2EB76 /* DiscountBank-interview */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "DiscountBank-interview";
+			sourceTree = "<group>";
+		};
+		E4B208912FB4B1EA00C2EB76 /* DiscountBank-interviewTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "DiscountBank-interviewTests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +47,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E4B208942FB4B1EA00C2EB76 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B208732FB4B1EA00C2EB76 /* DiscountBank-interview */,
+				E4B208912FB4B1EA00C2EB76 /* DiscountBank-interviewTests */,
 				E4B208722FB4B1EA00C2EB76 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */,
+				E4B208902FB4B1EA00C2EB76 /* DiscountBank-interviewTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +101,29 @@
 			productReference = E4B208712FB4B1EA00C2EB76 /* DiscountBank-interview.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E4B208922FB4B1EA00C2EB76 /* DiscountBank-interviewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4B2089A2FB4B1EB00C2EB76 /* Build configuration list for PBXNativeTarget "DiscountBank-interviewTests" */;
+			buildPhases = (
+				E4B208932FB4B1EA00C2EB76 /* Sources */,
+				E4B208942FB4B1EA00C2EB76 /* Frameworks */,
+				E4B208952FB4B1EA00C2EB76 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E4B208962FB4B1EA00C2EB76 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E4B208912FB4B1EA00C2EB76 /* DiscountBank-interviewTests */,
+			);
+			name = "DiscountBank-interviewTests";
+			packageProductDependencies = (
+			);
+			productName = "DiscountBank-interviewTests";
+			productReference = E4B208902FB4B1EA00C2EB76 /* DiscountBank-interviewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -88,6 +136,10 @@
 				TargetAttributes = {
 					E4B208702FB4B1EA00C2EB76 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					E4B208922FB4B1EA00C2EB76 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = E4B208702FB4B1EA00C2EB76;
 					};
 				};
 			};
@@ -109,12 +161,20 @@
 			projectRoot = "";
 			targets = (
 				E4B208702FB4B1EA00C2EB76 /* DiscountBank-interview */,
+				E4B208922FB4B1EA00C2EB76 /* DiscountBank-interviewTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E4B2086F2FB4B1EA00C2EB76 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4B208952FB4B1EA00C2EB76 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -131,7 +191,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E4B208932FB4B1EA00C2EB76 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E4B208962FB4B1EA00C2EB76 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4B208702FB4B1EA00C2EB76 /* DiscountBank-interview */;
+			targetProxy = E4B208972FB4B1EA00C2EB76 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E4B2087A2FB4B1EB00C2EB76 /* Debug */ = {
@@ -319,6 +394,58 @@
 			};
 			name = Release;
 		};
+		E4B208982FB4B1EB00C2EB76 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LJZU28Y234;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "AviramNetanel.DiscountBank-interview.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscountBank-interview.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DiscountBank-interview";
+			};
+			name = Debug;
+		};
+		E4B208992FB4B1EB00C2EB76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LJZU28Y234;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "AviramNetanel.DiscountBank-interview.tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiscountBank-interview.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DiscountBank-interview";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -336,6 +463,15 @@
 			buildConfigurations = (
 				E4B2087D2FB4B1EB00C2EB76 /* Debug */,
 				E4B2087E2FB4B1EB00C2EB76 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E4B2089A2FB4B1EB00C2EB76 /* Build configuration list for PBXNativeTarget "DiscountBank-interviewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4B208982FB4B1EB00C2EB76 /* Debug */,
+				E4B208992FB4B1EB00C2EB76 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

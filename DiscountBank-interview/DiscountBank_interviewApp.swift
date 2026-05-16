@@ -10,11 +10,23 @@ import SwiftUI
 
 @main
 struct DiscountBank_interviewApp: App {
+  private let isUnitTesting: Bool
   private let modelContainer: ModelContainer
   @State private var bankStore: BankStore
   @State private var isLoggedIn = false
 
   init() {
+    isUnitTesting = ProcessInfo.isUnitTesting
+
+    if isUnitTesting {
+      modelContainer = try! ModelContainer(
+        for: TransactionOverride.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+      )
+      _bankStore = State(initialValue: BankStore())
+      return
+    }
+
     let container: ModelContainer
     do {
       container = try ModelContainer(for: TransactionOverride.self)
@@ -31,15 +43,20 @@ struct DiscountBank_interviewApp: App {
 
   var body: some Scene {
     WindowGroup {
-      Group {
-        if isLoggedIn {
-          ContentView()
-        } else {
-          LoginView(isLoggedIn: $isLoggedIn, bankStore: bankStore)
-        }
-      }
-      .environment(bankStore)
+      rootView
+        .environment(bankStore)
     }
     .modelContainer(modelContainer)
+  }
+
+  @ViewBuilder
+  private var rootView: some View {
+    if isUnitTesting {
+      EmptyView()
+    } else if isLoggedIn {
+      ContentView()
+    } else {
+      LoginView(isLoggedIn: $isLoggedIn, bankStore: bankStore)
+    }
   }
 }
